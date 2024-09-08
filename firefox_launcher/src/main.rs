@@ -14,20 +14,14 @@ fn main() {
     //    ├── firefox.icns
     //    └── Profile            // profile_path
     let exe_path = env::current_exe().expect("Failed to get current executable path");
-
     let resources_path = exe_path
         .parent()
         .and_then(|p| p.parent())
         .map(|p| p.to_path_buf())
         .map(|p| p.join("Resources"))
         .expect("Failed to construct Resources directory path");
-
     let firefox_app_path = PathBuf::from(&resources_path).join("Firefox.app");
-
     let profile_path = PathBuf::from(&resources_path).join("Profile");
-    if !profile_path.exists() {
-        std::fs::create_dir_all(&profile_path).expect("Failed to create Profile directory");
-    }
 
     // Firefoxを実行
     let mut command = Command::new("open");
@@ -42,6 +36,5 @@ fn main() {
     for arg in args {
         command.arg(arg);
     }
-
     command.spawn().expect("Failed to execute Firefox");
 }
